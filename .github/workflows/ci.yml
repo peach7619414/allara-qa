@@ -8,6 +8,7 @@ on:
 jobs:
   python-tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,7 +23,20 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # ✅ Install Chrome for Selenium
+      - name: Set up Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Verify Chrome
+        run: |
+          chrome --version || google-chrome --version || chromium --version
+
+      # ✅ Run pytest (headless)
       - name: Run pytest
+        env:
+          # optional envs if your tests read them:
+          BASE_URL: ${{ secrets.BASE_URL }}
         run: |
           pytest -q --maxfail=1 --disable-warnings --junitxml=test-results/pytest-report.xml
 
