@@ -21,8 +21,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # Always install pytest explicitly
           pip install pytest selenium webdriver-manager requests
+
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@v1
 
       - name: Make results folder
         run: mkdir -p test-results
