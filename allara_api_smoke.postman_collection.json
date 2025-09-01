@@ -1,0 +1,63 @@
+{
+  "info": {
+    "name": "Allara API Smoke",
+    "_postman_id": "allara-smoke-001",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Public smoke checks for Allara web endpoints"
+  },
+  "item": [
+    {
+      "name": "GET Home",
+      "request": { "method": "GET", "url": "{{BASE_URL}}/" },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "pm.test('Body has some content', () => pm.response.text().length > 50);",
+              "pm.test('Responds within 3s', () => pm.expect(pm.response.responseTime).to.be.below(3000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET Sitemap",
+      "request": { "method": "GET", "url": "{{BASE_URL}}/sitemap.xml" },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200/301', () => pm.expect([200,301]).to.include(pm.response.code));",
+              "pm.test('Has xml or redirect', () => pm.expect(pm.response.text().length).to.be.greaterThan(0));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET robots.txt",
+      "request": { "method": "GET", "url": "{{BASE_URL}}/robots.txt" },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200/404 (both acceptable)', () => pm.expect([200,404]).to.include(pm.response.code));",
+              "pm.test('Responds within 3s', () => pm.expect(pm.response.responseTime).to.be.below(3000));"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    { "key": "BASE_URL", "value": "https://allarahealth.com" }
+  ]
+}
