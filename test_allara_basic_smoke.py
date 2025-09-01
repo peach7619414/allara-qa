@@ -100,3 +100,18 @@ def main():
 
 if __name__ == "__main__":
     main()
+def test_homepage_title_loads():
+    options = Options()
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
+
+    driver.get(BASE_URL)  # e.g., "https://allarahealth.com"
+    # Pass if page opened and has any title text
+    assert driver.title.strip() != ""
+
+    driver.quit()
+
