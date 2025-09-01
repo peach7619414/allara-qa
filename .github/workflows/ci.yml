@@ -24,7 +24,7 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest pytest/ -q --maxfail=1 --disable-warnings --junitxml=test-results/pytest-report.xml
+          pytest -q --maxfail=1 --disable-warnings --junitxml=test-results/pytest-report.xml
 
       - name: Upload pytest results
         if: always()
